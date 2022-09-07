@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Alert } from "@mui/material";
-
-
+import { useRef } from "react";
 
 function Signup() {
   const initalValue = { name: "", email: "", password: "", cpassword: "" };
   const [values, setValues] = useState(initalValue);
   const [errors, setError] = useState(initalValue);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [alert,setAlert]=useState({
-    setalert:false,
-    color:"",
-    message:""
+  const isSubmit = useRef(false);
+  const [alert, setAlert] = useState({
+    setalert: false,
+    color: "",
+    message: "",
   });
-
 
   const handleChange = (event) => {
     const { name, value } = event;
@@ -23,20 +21,22 @@ function Signup() {
       ...prev,
       [name]: value,
     }));
-   
-    // if(isSubmit){
-    //   validate()
-    // }
   };
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
 
   const onSubmit = () => {
+    console.log("Hello");
     validate();
-    if(isSubmit){
+    if (isSubmit) {
+      console.log("iS Submit");
       registerUser();
     }
   };
 
   const validate = () => {
+    console.log("Inside Validate");
     setError((err) => ({
       ...err,
       name: `${values.name ? "" : "Please Enter a Name"}`,
@@ -55,53 +55,50 @@ function Signup() {
     }));
 
     if (!values.email.includes("@")) {
-  
       setError((err) => ({ ...err, email: "Please Enter a Valid  Email" }));
     }
-    if(values.password!==values.cpassword){
+    if (values.password !== values.cpassword) {
       setError((err) => ({ ...err, cpassword: "Password Not Matching" }));
     }
 
-     for(let val of Object.values(errors)){
-      if(val===""){
-           setIsSubmit(true)
+    for (let val of Object.values(errors)) {
+      if (val === "") {
+        isSubmit.current = true;
+      } else {
+        isSubmit.current = false;
       }
-      else{
-         setIsSubmit(false);
-      }
-     }
+
+      console.log(isSubmit);
+    }
   };
 
   const registerUser = async () => {
+    console.log("Hello register");
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.post("/register",{values}, config)
+    const response = await axios.post("/api/register", { values }, config);
 
     console.log(response);
-    if(response.data.result==="User Already Exist"){
+    if (response.data.result === "User Already Exist") {
       setAlert({
-        setalert:true,
-        message:"User Already Exist",
-        color:"error"
-      })
-      
+        setalert: true,
+        message: "User Already Exist",
+        color: "error",
+      });
     }
-    if(response.data.result==="User Created Successfully"){
+    if (response.data.result === "User Created Successfully") {
       setAlert({
-        setalert:true,
-        message:"User Created Successfully",
-        color:"success"
-      })
-      
+        setalert: true,
+        message: "User Created Successfully",
+        color: "success",
+      });
     }
-
-    
   };
 
-  return(
+  return (
     <>
       <div>
         <h3>Name</h3>
@@ -151,22 +148,17 @@ function Signup() {
         ></input>
         <p className="text-sm text-red-900">{errors.cpassword}</p>
       </div>
-      <div className="w-full text-center border border-sky-700 p-1 bg-gradient-to-r from-sky-500 to-indigo-500 text-white hover:text-black" onClick={() => {
-            onSubmit();
-          }}>
-        <button
-          type="submit"
-          >
-          Sign UP
-        </button>
-
-      
-  
-
+      <div
+        className="w-full text-center border border-sky-700 p-1 bg-gradient-to-r from-sky-500 to-indigo-500 text-white hover:text-black"
+        onClick={() => {
+          onSubmit();
+        }}
+      >
+        <button type="submit">Sign UP</button>
       </div>
-     {alert.setalert && <Alert severity={alert.color}>{alert.message}</Alert>}
+      {alert.setalert && <Alert severity={alert.color}>{alert.message}</Alert>}
     </>
-  )
+  );
 }
 
 export default Signup;

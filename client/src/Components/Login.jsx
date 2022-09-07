@@ -1,9 +1,10 @@
-import React, { createContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import axios from "axios";
 import { useState } from "react";
 import {Link} from "react-router-dom";
 import { useRef } from "react";
+import { Alert } from "@mui/material";
 
 
 
@@ -13,9 +14,14 @@ function Login({setData}) {
   const initalValue = { email: "", password: "" };
   const [values, setValues] = useState({ ...initalValue });
   const [errors, setError] = useState(initalValue);
-  const [isSubmit, setIsSubmit] = useState(false);
+  // const [isSubmit, setIsSubmit] = useState(false);
+  const isSubmit=useRef(false);
   const route=useRef(false);
 
+
+  useEffect(()=>{
+  console.log(values);
+  },[route])
 
 
 
@@ -29,7 +35,7 @@ function Login({setData}) {
     }));
   };
   const onSubmit = () => {
-    setIsSubmit(true);
+    isSubmit.current=true
     validate();
     if(isSubmit){
       LoginUser();
@@ -49,10 +55,10 @@ function Login({setData}) {
     }));
     for(let val of Object.values(errors)){
       if(val===""){
-           setIsSubmit(true)
+        isSubmit.current=true;
       }
       else{
-         setIsSubmit(false);
+        isSubmit.current=false;
       }
      }
    
@@ -68,12 +74,13 @@ function Login({setData}) {
       },
     };
     try{
-      const response = await axios.post("/login",{values}, config)
+      const response = await axios.post("/api/login",{values}, config)
       if(response.status===200){
         console.log("Successful");
         route.current=true;
+        
+        console.log(route);
         setError((err)=>({...err,email:"",password:""}))
-       
         setData(response);
        
       }
@@ -127,9 +134,9 @@ function Login({setData}) {
        <Link to={`${route.current? `/profile`:"/"}`}>
         <button type="submit">Login</button>
         </Link>
-        {route.current && <Link to="/profile"></Link>}
+        
       </div>
-      
+      {route.current && <Alert severity="success">{"Login Succesfull Click to Continue"}</Alert>}
       
     </>
   );

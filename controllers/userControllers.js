@@ -163,12 +163,16 @@ console.log("Udate");
    console.log(mobile);
 const findUser=await SignedUser.findOne({email})
 
+
 const some=await  SignedUser.findOneAndUpdate({email:email} ,{age:age});
 const some2=await  SignedUser.findOneAndUpdate({email:email} ,{DOB:dob});
 const some3=await  SignedUser.findOneAndUpdate({email:email} ,{mobile_no:mobile});
 const some4=await  SignedUser.findOneAndUpdate({email:email} ,{Gender:gender});
 
-
-  console.log(findUser);
+res.status(200).json({
+    result:"success",
+    message:"User Succesfully Updated"
+})
+//   console.log(findUser);
 }
 

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState ,useRef} from "react";
 import axios from "axios";
 import { useEffect } from "react";
-
+import { Link } from "react-router-dom";
+import { Alert } from "@mui/material";
 function Profile({ data }) {
   const [values, setValues] = useState({
     email: "",
@@ -10,12 +11,23 @@ function Profile({ data }) {
     mobile: "",
     gender: "",
   });
+  const updated=useRef(false);
+  const [update,setUpdate]=useState(false);
 
   useEffect(() => {
     if (data) {
       getDataOfUser();
     }
   }, []);
+
+  const setDate=(dates)=>{
+  const date=new Date(dates);
+  const year = date.getFullYear();
+  const month = date.getMonth() < 10 ? '0'+ (date.getMonth()+1) : (date.getMonth()+1)
+  const day =  date.getDate() < 10 ? '0'+ date.getDate(): date.getDate()
+  const d= (year+"-" +month+"-" +day);
+  return d;
+  }
   const getDataOfUser = async () => {
     const config = {
       headers: {
@@ -23,17 +35,16 @@ function Profile({ data }) {
       },
     };
     try {
-      const response = await axios.post("/user", { data }, config);
+      const response = await axios.post("/api/user", { data }, config);
       console.log(response.data.user);
       const { age, DOB, Gender, mobile_no, email } = response.data.user;
-     
+
       console.log("date is" + DOB);
-     
 
       setValues((prev) => ({
         ...prev,
         age: age,
-        dob: DOB,
+        dob: setDate(DOB),
         gender: Gender,
         mobile: mobile_no,
         email: email,
@@ -44,9 +55,7 @@ function Profile({ data }) {
   };
   const UpdateData = async () => {
     const { age, mobile, dob, gender } = values;
-    let date=new Date(dob);
-    console.log(date);
-    console.log(date.toISOString())
+ 
 
     const config = {
       headers: {
@@ -54,7 +63,12 @@ function Profile({ data }) {
       },
     };
     try {
-      const response = await axios.post("/userUpdate", { values }, config);
+      const response = await axios.post("/api/userUpdate", { values }, config);
+      setUpdate(true);
+      console.log(response);
+      setTimeout(()=>{
+       setUpdate(false);
+      },5000)
     } catch (e) {
       console.log(e);
     }
@@ -62,11 +76,12 @@ function Profile({ data }) {
 
   const handleChange = (event) => {
     const { name, value } = event;
+ 
     setValues((prev) => ({
       ...prev,
       [name]: value,
     }));
-    console.log(values);
+   
   };
   return (
     <>
@@ -98,6 +113,7 @@ function Profile({ data }) {
               placeholder="Enter Date of Birth"
               autoComplete="off"
               name="dob"
+              // defaultValue={`2022-9-9`}
               value={values.dob}
               onChange={(e) => {
                 handleChange(e.target);
@@ -129,6 +145,7 @@ function Profile({ data }) {
               autoComplete="off"
               name="mobile"
               value={values.mobile}
+
               onChange={(e) => {
                 handleChange(e.target);
               }}
@@ -137,7 +154,7 @@ function Profile({ data }) {
           </div>
 
           <div
-            className="w-full text-center border border-sky-700 p-1 bg-gradient-to-r from-sky-500 to-indigo-500 text-white hover:text-black"
+            className="w-full text-center flex flex-col space-y-2 border border-sky-700 p-1 bg-gradient-to-r from-sky-500 to-indigo-500 text-white hover:text-black"
             onClick={() => {}}
           >
             <button
@@ -148,7 +165,28 @@ function Profile({ data }) {
             >
               Submit Data
             </button>
+           
           </div>
+
+
+          <div
+            className="w-full text-center flex flex-col space-y-2 border border-sky-700 p-1 bg-gradient-to-r from-orange-400 to-orange-600 text-white hover:text-black"
+            onClick={() => {}}
+          >
+            <Link to="/">
+            <button
+              type="submit"
+              onClick={() => {
+                UpdateData();
+              }}
+              >
+              Logout
+            </button>
+              </Link>
+            
+           
+          </div>
+              {update && <Alert severity="success">{"User Updated"}</Alert>}
         </div>
       </div>
     </>
