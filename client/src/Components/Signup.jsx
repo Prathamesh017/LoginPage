@@ -54,11 +54,18 @@ function Signup() {
       cpassword: `${values.cpassword ? "" : "Please Enter a confirm password"}`,
     }));
 
+    
     if (!values.email.includes("@")) {
       setError((err) => ({ ...err, email: "Please Enter a Valid  Email" }));
     }
+    else{
+      setError((err) => ({ ...err, email: "" }));
+    }
     if (values.password !== values.cpassword) {
       setError((err) => ({ ...err, cpassword: "Password Not Matching" }));
+    }
+    else{
+      setError((err) => ({ ...err, cpassword: "" }));
     }
 
     for (let val of Object.values(errors)) {
