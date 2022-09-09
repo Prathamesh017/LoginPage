@@ -120,7 +120,7 @@ function Signup() {
         <p className="text-sm text-red-900">{errors.name}</p>
       </div>
       <div>
-        <h3>email</h3>
+        <h3>Email</h3>
         <input
           type="text"
           onChange={(e) => handleChange(e.target)}
@@ -132,7 +132,7 @@ function Signup() {
         <p className="text-sm text-red-900">{errors.email}</p>
       </div>
       <div>
-        <h3>password</h3>
+        <h3>Password</h3>
         <input
           type="text"
           onChange={(e) => handleChange(e.target)}
@@ -144,7 +144,7 @@ function Signup() {
         <p className="text-sm text-red-900">{errors.password}</p>
       </div>
       <div>
-        <h3>confirm password</h3>
+        <h3>Confirm Password</h3>
         <input
           type="text"
           onChange={(e) => handleChange(e.target)}
