@@ -54,11 +54,18 @@ function Signup() {
       cpassword: `${values.cpassword ? "" : "Please Enter a confirm password"}`,
     }));
 
+    
     if (!values.email.includes("@")) {
       setError((err) => ({ ...err, email: "Please Enter a Valid  Email" }));
     }
+    else{
+      setError((err) => ({ ...err, email: "" }));
+    }
     if (values.password !== values.cpassword) {
       setError((err) => ({ ...err, cpassword: "Password Not Matching" }));
+    }
+    else{
+      setError((err) => ({ ...err, cpassword: "" }));
     }
 
     for (let val of Object.values(errors)) {
@@ -113,7 +120,7 @@ function Signup() {
         <p className="text-sm text-red-900">{errors.name}</p>
       </div>
       <div>
-        <h3>email</h3>
+        <h3>Email</h3>
         <input
           type="text"
           onChange={(e) => handleChange(e.target)}
@@ -125,7 +132,7 @@ function Signup() {
         <p className="text-sm text-red-900">{errors.email}</p>
       </div>
       <div>
-        <h3>password</h3>
+        <h3>Password</h3>
         <input
           type="text"
           onChange={(e) => handleChange(e.target)}
@@ -137,7 +144,7 @@ function Signup() {
         <p className="text-sm text-red-900">{errors.password}</p>
       </div>
       <div>
-        <h3>confirm password</h3>
+        <h3>Confirm Password</h3>
         <input
           type="text"
           onChange={(e) => handleChange(e.target)}
@@ -156,7 +163,7 @@ function Signup() {
       >
         <button type="submit">Sign UP</button>
       </div>
-      {alert.setalert && <Alert severity={alert.color}>{alert.message}</Alert>}
+      {alert.setalert && <Alert severity={alert.color}>Signup Success</Alert>}
     </>
   );
 }
