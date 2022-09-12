@@ -51,7 +51,7 @@ function Login({setData}) {
     }));
     setError((err) => ({
       ...err,
-      password: `${values.password ? "" : "Please Enter a password"}`,
+      password: `${values.password ? "" : "Please Enter  password"}`,
     }));
     for(let val of Object.values(errors)){
       if(val===""){
