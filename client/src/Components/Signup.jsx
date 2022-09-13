@@ -7,7 +7,8 @@ function Signup() {
   const initalValue = { name: "", email: "", password: "", cpassword: "" };
   const [values, setValues] = useState(initalValue);
   const [errors, setError] = useState(initalValue);
-  const isSubmit = useRef(false);
+  // const isSubmit = useRef(false);
+  const [isSubmit,setIsSubmit]=useState(false);
   const [alert, setAlert] = useState({
     setalert: false,
     color: "",
@@ -35,6 +36,10 @@ function Signup() {
     }
   };
 
+  const checkError=(item)=>{
+    console.log(item==="");
+   return item===""
+  }
   const validate = () => {
     console.log("Inside Validate");
     setError((err) => ({
@@ -54,30 +59,36 @@ function Signup() {
       cpassword: `${values.cpassword ? "" : "Please Enter a confirm password"}`,
     }));
 
-    
+    if(values.email){
     if (!values.email.includes("@")) {
       setError((err) => ({ ...err, email: "Please Enter a Valid  Email" }));
     }
     else{
       setError((err) => ({ ...err, email: "" }));
     }
+  }
+    if(values.cpassword){
     if (values.password !== values.cpassword) {
       setError((err) => ({ ...err, cpassword: "Password Not Matching" }));
     }
     else{
       setError((err) => ({ ...err, cpassword: "" }));
     }
+  }
 
-    for (let val of Object.values(errors)) {
-      if (val === "") {
-        isSubmit.current = true;
-      } else {
-        isSubmit.current = false;
-      }
 
-      console.log(isSubmit);
-    }
-  };
+  
+  const err=Object.values(errors);
+
+ const mt=(err.every(checkError))
+ 
+  if(mt){
+    setIsSubmit(true);
+  }
+  else{
+    setIsSubmit(false);
+  }
+};
 
   const registerUser = async () => {
     console.log("Hello register");
@@ -163,7 +174,7 @@ function Signup() {
       >
         <button type="submit">Sign UP</button>
       </div>
-      {alert.setalert && <Alert severity={alert.color}>Signup Success</Alert>}
+      {alert.setalert && <Alert severity={alert.color}>{alert.message}</Alert>}
     </>
   );
 }
