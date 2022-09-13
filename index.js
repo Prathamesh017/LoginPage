@@ -17,12 +17,10 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 else{
-    app.use("/", (req, res) => {
-        res.send("Hello World");
-      });
+  app.use("/api", router);
  }
 
-app.use("/api", router);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("Server Is Listening");
