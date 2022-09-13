@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Alert } from "@mui/material";
 import { useRef } from "react";
+import { flexbox } from "@mui/system";
 
 function Signup() {
   const initalValue = { name: "", email: "", password: "", cpassword: "" };
   const [values, setValues] = useState(initalValue);
   const [errors, setError] = useState(initalValue);
   // const isSubmit = useRef(false);
+  const [button,buttonClicked]=useState(false);
   const [isSubmit,setIsSubmit]=useState(false);
   const [alert, setAlert] = useState({
     setalert: false,
@@ -24,20 +26,40 @@ function Signup() {
     }));
   };
   useEffect(() => {
-    console.log(values);
-  }, [values]);
+    if(button){
+    const err=Object.values(errors);
+    console.log(err);
+    const mt=(err.every(checkError))
+   console.log("Error check"+mt);
+   if(mt){
+    setIsSubmit(true);
+   
+    // isSubmit.current=true;
+  }
+  else{
+    setIsSubmit(false);
+  }
+}
+  }, [errors,button]);
 
+useEffect(()=>{
+  if(isSubmit){
+    console.log("Hello IsSubmit");
+    registerUser();
+  }
+},[isSubmit])
   const onSubmit = () => {
     console.log("Hello");
+    buttonClicked(true);
     validate();
+    console.log(isSubmit);
     if (isSubmit) {
       console.log("iS Submit");
       registerUser();
     }
   };
-
+ 
   const checkError=(item)=>{
-    console.log(item==="");
    return item===""
   }
   const validate = () => {
@@ -77,20 +99,11 @@ function Signup() {
   }
 
 
-  
-  const err=Object.values(errors);
 
- const mt=(err.every(checkError))
- 
-  if(mt){
-    setIsSubmit(true);
-  }
-  else{
-    setIsSubmit(false);
-  }
 };
 
   const registerUser = async () => {
+
     console.log("Hello register");
     const config = {
       headers: {
