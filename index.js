@@ -16,9 +16,7 @@ console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-else{
-  app.use("https://loginpageppt.herokuapp.com/api", router);
- }
+
 
 
 const PORT = process.env.PORT || 5000;
