@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 else{
-  app.use("/api", router);
+  app.use("https://loginpageppt.herokuapp.com/api", router);
  }
 
 
