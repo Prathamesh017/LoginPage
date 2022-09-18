@@ -8,9 +8,7 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently  \" npm  run server\"   \"npm run  client\"",
-    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
-    
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Prathamesh Thakare",
   "license": "ISC",
@@ -25,8 +23,8 @@
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
+    "gh-pages": "^4.0.0",
     "nodemon": "^2.0.19"
   },
-  "proxy":"http://127.0.0.1:5000"
-   
+  "proxy": "http://127.0.0.1:5000"
 }
