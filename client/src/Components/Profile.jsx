@@ -35,7 +35,7 @@ function Profile({ data }) {
       },
     };
     try {
-      const response = await axios.post("/api/user", { data }, config);
+      const response = await axios.post("https://loginpageppt.herokuapp.com/api/user", { data }, config);
       console.log(response.data.user);
       const { age, DOB, Gender, mobile_no, email } = response.data.user;
 
@@ -63,7 +63,7 @@ function Profile({ data }) {
       },
     };
     try {
-      const response = await axios.post("/api/userUpdate", { values }, config);
+      const response = await axios.post("https://loginpageppt.herokuapp.com/api/userUpdate", { values }, config);
       setUpdate(true);
       console.log(response);
       setTimeout(()=>{

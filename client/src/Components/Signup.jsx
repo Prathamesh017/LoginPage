@@ -110,7 +110,7 @@ useEffect(()=>{
         "Content-Type": "application/json",
       },
     };
-    const response = await axios.post("/api/register", { values }, config);
+    const response = await axios.post("https://loginpageppt.herokuapp.com/api/register", { values }, config);
 
     console.log(response);
     if (response.data.result === "User Already Exist") {
