@@ -15,10 +15,12 @@ console.log(process.env.NODE_ENV);
 // const paths=path.join(__dirname);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
+}else{
+  // app.use("/",router)
 }
 
 
-
+app.use("/api",router);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("Server Is Listening");
